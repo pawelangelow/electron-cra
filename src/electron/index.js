@@ -1,3 +1,5 @@
+const { join } = require('path');
+
 const { app, BrowserWindow } = require('electron');
 const isDev = require('electron-is-dev');
 
@@ -8,11 +10,11 @@ const createWindow = () => {
     width: 800,
     height: 600,
     webPreferences: {
-      nodeIntegration: true,
+      preload: join(app.getAppPath(), '..', 'preload.js'),
     },
   });
 
-  const startPointOfBuild = 'file://build-folder/index.html';
+  const startPointOfBuild = `file://${join(__dirname, '..', 'index.html')}`;
   mainWindow.loadURL(isDev ? 'http://localhost:3000' : startPointOfBuild);
 
   mainWindow.on('closed', () => {
