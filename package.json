@@ -11,6 +11,7 @@
     "build": "npm run build-react && npm run build-electron",
     "watch-electron": "cross-env ELECTRON_IS_DEV=1 nodemon --watch . --exec 'electron ./src/electron'",
     "watch": "concurrently \"cross-env BROWSER=none npm run start-react\" \"wait-on http://localhost:3000 && npm run watch-electron\"",
+    "release": "electron-builder -w",
     "test": "react-scripts test"
   },
   "eslintConfig": {
@@ -33,6 +34,19 @@
     ]
   },
   "homepage": "./",
+  "main": "build/electron/index.js",
+  "build": {
+    "appId": "your.application.with.electron",
+    "files": [
+      "build/**/*",
+      "node_modules/**/*",
+      "package.json"
+    ],
+    "win": {
+      "target": "portable"
+    },
+    "extends": null
+  },
   "dependencies": {
     "react": "16.12.0",
     "react-dom": "16.12.0",
@@ -42,6 +56,7 @@
     "concurrently": "5.0.0",
     "cross-env": "6.0.3",
     "electron": "7.1.2",
+    "electron-builder": "21.2.0",
     "electron-is-dev": "1.1.0",
     "nodemon": "2.0.1",
     "wait-on": "3.3.0"
