@@ -2,20 +2,14 @@
   "name": "electron-cra",
   "version": "0.1.0",
   "private": true,
-  "dependencies": {
-    "react": "16.12.0",
-    "react-dom": "16.12.0",
-    "react-scripts": "3.2.0"
-  },
   "scripts": {
     "start-react": "react-scripts start",
-    "build-react": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject",
     "start-electron": "wait-on http://localhost:3000 && cross-env ELECTRON_IS_DEV=1 electron ./src/electron",
     "start": "concurrently \"cross-env BROWSER=none npm run start-react\" \"npm run start-electron\"",
+    "build-react": "react-scripts build",
     "build-electron": "cp -r ./src/* ./build",
-    "build": "npm run build-react && npm run build-electron"
+    "build": "npm run build-react && npm run build-electron",
+    "test": "react-scripts test"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -37,6 +31,11 @@
     ]
   },
   "homepage": "./",
+  "dependencies": {
+    "react": "16.12.0",
+    "react-dom": "16.12.0",
+    "react-scripts": "3.2.0"
+  },
   "devDependencies": {
     "concurrently": "5.0.0",
     "cross-env": "6.0.3",
