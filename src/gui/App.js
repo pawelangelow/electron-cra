@@ -1,6 +1,14 @@
-import React, { useState } from 'react';
-import { Box, Button, Collapsible, Heading, Grommet, TextInput } from 'grommet';
-import { Action, NewWindow } from 'grommet-icons';
+import React, { useState, useEffect, useCallback } from 'react';
+import {
+  Box,
+  Button,
+  Collapsible,
+  Heading,
+  Grommet,
+  TextInput,
+  List,
+} from 'grommet';
+import { Action, NewWindow, Add, Stop } from 'grommet-icons';
 const ipcRenderer = window.ipcRenderer;
 
 const theme = {
@@ -33,10 +41,33 @@ const AppBar = props => (
 function App() {
   const [isCollapsed, setIsCollapsed] = useState(true);
   const [windowName, setWindowName] = useState('New window');
+  const [data, setData] = useState([]);
 
   const openNewWindowHandler = () => {
     ipcRenderer.send('new-window-channel', windowName);
   };
+
+  const startWorkerHandler = () => {
+    ipcRenderer.send('start-the-worker');
+  };
+
+  const stopWorkerHandler = () => {
+    ipcRenderer.send('stop-the-worker');
+  };
+
+  const handleIncomingData = useCallback(
+    (event, messageData) => {
+      setData([{ name: messageData }, ...data].slice(0, 5));
+    },
+    [data],
+  );
+
+  useEffect(() => {
+    ipcRenderer.on('workers-answer', handleIncomingData);
+
+    return () =>
+      ipcRenderer.removeListener('workers-answer', handleIncomingData);
+  }, [handleIncomingData]);
 
   return (
     <Grommet theme={theme} full>
@@ -65,6 +96,16 @@ function App() {
                   label="Open new window"
                   onClick={openNewWindowHandler}
                 />
+                <Button
+                  icon={<Add />}
+                  label="Start worker"
+                  onClick={startWorkerHandler}
+                />
+                <Button
+                  icon={<Stop />}
+                  label="Stop worker"
+                  onClick={stopWorkerHandler}
+                />
               </Box>
               <Box pad="medium" />
             </Box>
@@ -78,7 +119,7 @@ function App() {
               align="center"
               justify="center"
             >
-              sidebar
+              <List primaryKey="name" secondaryKey="percent" data={data} />
             </Box>
           </Collapsible>
         </Box>

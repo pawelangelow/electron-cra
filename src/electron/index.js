@@ -2,6 +2,7 @@ const { join } = require('path');
 
 const { app, BrowserWindow, ipcMain } = require('electron');
 const isDev = require('electron-is-dev');
+const startBackgroundProcesses = require('./background');
 
 let mainWindow;
 
@@ -27,6 +28,9 @@ const createWindow = () => {
   });
 
   isDev && mainWindow.webContents.openDevTools();
+
+  startBackgroundProcesses(mainWindow);
+
   ipcMain.on('new-window-channel', (event, windowName) => {
     let newWindow = new BrowserWindow({
       title: windowName || 'My new window',
