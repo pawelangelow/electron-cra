@@ -49,6 +49,26 @@ const createWindow = () => {
       }
     }, 10 * 1000);
   });
+
+  ipcMain.on('native-feature', () => {
+    let newWindow = new BrowserWindow({
+      width: 600,
+      height: 480,
+      show: false,
+    });
+
+    newWindow.loadURL(`file://${join(__dirname, 'native.html')}`);
+    newWindow.on('closed', () => {
+      console.log('Window is closed');
+      newWindow = null;
+    });
+
+    setTimeout(() => {
+      if (newWindow) {
+        newWindow.close();
+      }
+    }, 10 * 1000);
+  });
 };
 
 app.on('ready', createWindow);

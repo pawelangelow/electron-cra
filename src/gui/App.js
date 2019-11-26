@@ -8,7 +8,7 @@ import {
   TextInput,
   List,
 } from 'grommet';
-import { Action, NewWindow, Add, Stop } from 'grommet-icons';
+import { Action, NewWindow, Add, Stop, PersonalComputer } from 'grommet-icons';
 const ipcRenderer = window.ipcRenderer;
 
 const theme = {
@@ -45,6 +45,10 @@ function App() {
 
   const openNewWindowHandler = () => {
     ipcRenderer.send('new-window-channel', windowName);
+  };
+
+  const showNativeHandler = () => {
+    ipcRenderer.send('native-feature');
   };
 
   const startWorkerHandler = () => {
@@ -105,6 +109,11 @@ function App() {
                   icon={<Stop />}
                   label="Stop worker"
                   onClick={stopWorkerHandler}
+                />
+                <Button
+                  icon={<PersonalComputer />}
+                  label="Show something native"
+                  onClick={showNativeHandler}
                 />
               </Box>
               <Box pad="medium" />

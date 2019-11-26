@@ -1,0 +1,9 @@
+<script>
+  let myNotification = new Notification('Nice, a?', {
+    body: 'Very cool notification from electron',
+  });
+
+  myNotification.onclick = () => {
+    console.log('Notification clicked');
+  };
+</script>
