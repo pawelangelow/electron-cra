@@ -1,5 +1,2 @@
-const electron = require('electron');
-
-console.log(electron);
-// window.something = () => {
-// };
+const { ipcRenderer } = require('electron');
+window.ipcRenderer = ipcRenderer;

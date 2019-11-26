@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
-import { Box, Button, Collapsible, Heading, Grommet } from 'grommet';
-import { Action } from 'grommet-icons';
+import { Box, Button, Collapsible, Heading, Grommet, TextInput } from 'grommet';
+import { Action, NewWindow } from 'grommet-icons';
+const ipcRenderer = window.ipcRenderer;
 
 const theme = {
   global: {
@@ -31,6 +32,11 @@ const AppBar = props => (
 
 function App() {
   const [isCollapsed, setIsCollapsed] = useState(true);
+  const [windowName, setWindowName] = useState('New window');
+
+  const openNewWindowHandler = () => {
+    ipcRenderer.send('new-window-channel', windowName);
+  };
 
   return (
     <Grommet theme={theme} full>
@@ -44,9 +50,24 @@ function App() {
             onClick={() => setIsCollapsed(!isCollapsed)}
           />
         </AppBar>
-        <Box direction="row" flex overflow={{ horizontal: 'hidden' }}>
-          <Box flex align="center" justify="center">
-            app body
+        <Box direction="row" fill>
+          <Box fill>
+            <Box full direction="row" pad="medium">
+              <Box pad="medium" />
+              <Box flex align="center" justify="center" gap="medium">
+                <TextInput
+                  placeholder="type here"
+                  value={windowName}
+                  onChange={event => setWindowName(event.target.value)}
+                />
+                <Button
+                  icon={<NewWindow />}
+                  label="Open new window"
+                  onClick={openNewWindowHandler}
+                />
+              </Box>
+              <Box pad="medium" />
+            </Box>
           </Box>
           <Collapsible direction="horizontal" open={!isCollapsed}>
             <Box
